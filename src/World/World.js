@@ -19,6 +19,8 @@ import { createPlayer } from './systems/player.js'
 
 import gsap from 'gsap'
 
+import { LensFlareEffect, LensFlareParams } from './systems/LensFlare.js'
+
 const params = {
   animateTime: true,
   showSunSurface: true,
@@ -101,13 +103,17 @@ class World {
     sunShadowHelper.visible = false
     
     loop.updatables.push(base, controls, sunPath, sky)
-    
-    scene.add(sky.sky, ambientLight, sunHelper, sunShadowHelper, sunPath.sunPathLight )
+
+    const lensFlareEffect = LensFlareEffect()
+
+    scene.add(sky.sky, ambientLight, sunHelper, sunShadowHelper, sunPath.sunPathLight, lensFlareEffect )
 
     this.gui = createGUI(params, ambientLight, sunLight, sunHelper, sunShadowHelper, sunPath, controls, skyControl, cameraControl)
     resizer = new Resizer(container, activeCamera, renderer)
   }
 
+
+  
   async init() {
     const { house } = await loadHouse()
     const birds = await loadBirds()
@@ -120,6 +126,8 @@ class World {
     loop.updatables.push(player)
   }
 
+
+  
   start() {
     loop.start()
   }
